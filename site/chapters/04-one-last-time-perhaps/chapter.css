@@ -21,9 +21,9 @@
     --letter-glow-soft: rgba(132, 79, 32, 0.1);
     --letter-moss: rgba(66, 76, 47, 0.18);
     --letter-clear: rgba(19, 14, 10, 0);
-    --letter-veil: rgba(19, 14, 10, 0.91);
-    --letter-veil-soft: rgba(19, 14, 10, 0.55);
-    --letter-edge: rgba(9, 6, 4, 0.34);
+    --letter-veil: rgba(12, 9, 7, 0.56);
+    --letter-veil-soft: rgba(12, 9, 7, 0.26);
+    --letter-edge: rgba(9, 6, 4, 0.22);
     --letter-grain: rgba(227, 192, 139, 0.02);
     --flower-petal: #b98b40;
     --flower-petal-light: #e1ba67;
@@ -88,7 +88,7 @@ body.unlocked {
     max-width: 100%;
     object-fit: cover;
     opacity: 0;
-    filter: saturate(0.62) sepia(0.12);
+    filter: none;
     transform: scale(1.035);
     transition: opacity var(--photo-fade-duration) ease;
 }
@@ -98,7 +98,7 @@ body.unlocked {
 }
 
 .memory-photo.active {
-    opacity: 0.52;
+    opacity: 0.86;
 }
 
 .autumn-light {
@@ -124,7 +124,7 @@ body.unlocked {
     inset: 0;
     z-index: 3;
     background:
-        linear-gradient(90deg, var(--letter-clear) 0%, var(--letter-veil-soft) 24%, var(--letter-veil) 40%, var(--letter-veil) 60%, var(--letter-veil-soft) 76%, var(--letter-clear) 100%),
+        radial-gradient(ellipse at 50% 50%, var(--letter-veil) 0%, var(--letter-veil-soft) 70%, var(--letter-clear) 100%),
         linear-gradient(180deg, var(--letter-edge), var(--letter-clear) 25%, var(--letter-clear) 75%, var(--letter-edge));
 }
 
@@ -360,7 +360,10 @@ body.unlocked {
     padding-top: calc(88px + env(safe-area-inset-top, 0px));
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
-    text-shadow: 0 2px 12px var(--letter-shadow);
+    text-shadow:
+        0 1px 2px var(--letter-shadow),
+        0 0 10px var(--letter-shadow),
+        0 0 22px var(--letter-shadow);
 }
 
 .letter-cover {
@@ -540,9 +543,8 @@ body.unlocked {
     }
 
     .autumn-veil {
-        background:
-            linear-gradient(90deg, var(--letter-veil-soft), var(--letter-veil) 18%, var(--letter-veil) 82%, var(--letter-veil-soft)),
-            linear-gradient(180deg, var(--letter-edge), var(--letter-clear) 25%, var(--letter-edge));
+        /* Even shading avoids a dark strip across faces on narrow screens. */
+        background: var(--letter-veil);
     }
 
     .letter-lock {
