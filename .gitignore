@@ -1,0 +1,17 @@
+# Keep private drafts and local tooling out of the GitHub repository.
+/source-material/
+/local-only/
+/.claude/
+/.claude-dev-helper/
+/.vercel/
+
+# Local credentials and dependencies.
+.env
+.env.*
+!.env.example
+node_modules/
+
+# Editor and OS files.
+.vscode/
+.DS_Store
+Thumbs.db

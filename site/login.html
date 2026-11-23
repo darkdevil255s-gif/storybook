@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="theme-color" content="#130e0a">
+    <title>Private Book</title>
+    <link rel="stylesheet" href="./login.css">
+    <script src="./login.js" defer></script>
+</head>
+<body>
+    <main class="login-page">
+        <section class="login-panel" aria-labelledby="login-title">
+            <span class="book-mark" aria-hidden="true"></span>
+            <h1 id="login-title">Private book</h1>
+            <p class="login-intro">Enter the book password to begin.<br>The chapter questions are inside.</p>
+            <form id="login-form">
+                <label for="book-password">Book password</label>
+                <div class="password-field">
+                    <input id="book-password" name="password" type="password" autocomplete="current-password"
+                        required maxlength="256" aria-describedby="login-status" disabled>
+                    <button id="show-password" class="show-password" type="button" aria-pressed="false"
+                        aria-controls="book-password" disabled>Show</button>
+                </div>
+                <button id="open-book" class="open-book" type="submit" disabled>Open book</button>
+                <p id="login-status" role="status" aria-live="polite">Preparing secure login…</p>
+                <button id="retry-login" class="retry-login" type="button" hidden>Try again</button>
+            </form>
+            <p class="login-footnote">Access lasts eight hours on this browser. Use “Lock” when you finish.</p>
+            <noscript><p>Enable JavaScript to sign in.</p></noscript>
+        </section>
+    </main>
+</body>
+</html>

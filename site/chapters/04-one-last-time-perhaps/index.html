@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="description" content="Chapter IV. One Last Time, Perhaps. A personal letter.">
+    <title>One Last Time, Perhaps.</title>
+    <link rel="stylesheet" href="../../assets/chapter.css">
+    <link rel="stylesheet" href="../../assets/book-session.css">
+    <script src="../../assets/book-session.js" defer></script>
+    <link rel="stylesheet" href="chapter.css">
+    <script src="../../assets/chapter-tools.js" defer></script>
+    <script src="backgrounds.js" defer></script>
+    <script src="atmosphere.js" defer></script>
+    <script src="chapter.js" defer></script>
+</head>
+
+<body>
+    <div id="autumn-scene" aria-hidden="true">
+        <img class="memory-photo" alt="" width="1920" height="1080" decoding="async">
+        <img class="memory-photo" alt="" width="1920" height="1080" decoding="async">
+        <div class="autumn-light"></div>
+        <canvas id="autumn-leaves" aria-hidden="true"></canvas>
+        <div class="autumn-veil"></div>
+    </div>
+    <a class="book-back" href="../../index.html">← Back to book</a>
+    <audio id="bg-music" loop preload="none"></audio>
+    <button id="music-toggle" class="music-toggle" type="button" aria-pressed="false" data-playing-label="Pause Song"
+        data-paused-label="Play Song" data-error-label="Retry Song" hidden>Play Song</button>
+
+    <noscript>
+        <div class="book-script-warning">
+            <p>Enable JavaScript to open this letter.</p>
+            <a href="../../index.html">Back to book</a>
+        </div>
+    </noscript>
+
+    <section id="lock-screen" class="letter-lock" aria-labelledby="lock-title">
+        <div class="letter-lock-inner">
+            <div class="sunflower" aria-hidden="true">
+                <span class="petal" style="--i:0"></span><span class="petal" style="--i:1"></span>
+                <span class="petal" style="--i:2"></span><span class="petal" style="--i:3"></span>
+                <span class="petal" style="--i:4"></span><span class="petal" style="--i:5"></span>
+                <span class="petal" style="--i:6"></span><span class="petal" style="--i:7"></span>
+                <span class="petal" style="--i:8"></span><span class="petal" style="--i:9"></span>
+                <span class="petal" style="--i:10"></span><span class="petal" style="--i:11"></span>
+                <span class="petal" style="--i:12"></span><span class="petal" style="--i:13"></span>
+                <span class="petal" style="--i:14"></span><span class="petal" style="--i:15"></span>
+                <span class="flower-heart"></span>
+            </div>
+            <p class="chapter-marker">Chapter IV</p>
+            <h1 id="lock-title">One Last Time,<br>Perhaps.</h1>
+            <p class="letter-tagline">Some feelings don't disappear.<br>They just learn to stay quiet.</p>
+            <form id="unlock-form" novalidate>
+                <label class="book-input-label" for="chapter-password">When I was leaving, what did your heart
+                    want me to do?</label>
+                <p class="password-help" id="password-help">One word.</p>
+                <input id="chapter-password" type="password" placeholder="your answer" autocomplete="off"
+                    autocapitalize="off" autocorrect="off" spellcheck="false"
+                    aria-describedby="password-help lock-wrong">
+                <button id="unlock-btn" class="letter-unlock" type="submit">Open letter</button>
+                <p id="lock-wrong" class="letter-error" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </section>
+
+    <main id="letter-screen" hidden inert aria-hidden="true">
+        <header class="letter-cover">
+            <p class="chapter-marker">Chapter IV · A personal letter</p>
+            <h1 id="letter-title" tabindex="-1">One Last Time,<br>Perhaps.</h1>
+            <p class="letter-tagline">Some feelings don't disappear.<br>They just learn to stay quiet.</p>
+            <div class="soundtrack-note">
+                <span class="soundtrack-line" aria-hidden="true"></span>
+                <p>A song that once belonged to us.</p>
+                <p class="soundtrack-help" id="music-status" role="status" aria-live="polite">Kalle Kalle starts as the
+                    letter opens. Pause whenever you like.</p>
+                <button id="atmosphere-toggle" class="atmosphere-toggle" type="button" aria-pressed="false" hidden>Pause
+                    scenery</button>
+            </div>
+        </header>
+
+        <article class="letter" aria-label="A letter to you">
+            <p class="salutation">Dear you,</p>
+            <section class="letter-section" data-reveal aria-label="Forty days">
+                <p>I know it&#x27;s been more than forty days since I last reached out to you.</p>
+                <p>Forty days of barely talking. Forty days of seeing each other occasionally, exchanging those little
+                    greetings that come with being neighbours, and then going back to our own lives.</p>
+                <p>Almost like two people who know each other, but don&#x27;t quite know how to be around each other
+                    anymore.</p>
+                <p class="short-beat">I&#x27;ve got used to it, I guess.</p>
+                <p class="short-beat">Or at least, I&#x27;ve been trying to.</p>
+                <p>I know you don&#x27;t feel entirely comfortable around me anymore. I&#x27;ve noticed it. I&#x27;ve
+                    felt it. And honestly, I&#x27;ve stopped trying to question it. Maybe keeping some distance is what
+                    makes things easier for you. Maybe it&#x27;s what we both need. I don&#x27;t know.</p>
+                <p>But sometimes, I do miss how things used to be.</p>
+                <p>It&#x27;s been so long since we actually got some time alone together. Not those occasional
+                    conversations with everyone around, not those little interactions where we have to be conscious of
+                    who&#x27;s watching, but actual time. Just you and me.</p>
+                <p>Around Diwali, we did get a little of that.</p>
+                <p>But something felt different. We were together, yet strangely quiet. Almost like those old days when
+                    we had so much to say but somehow couldn&#x27;t say any of it.</p>
+            </section>
+            <blockquote class="memory-interlude" data-reveal>Remember that night we walked?</blockquote>
+            <section class="letter-section" data-reveal aria-label="The night we walked">
+                <p class="short-beat">And then I remembered that night.</p>
+                <p class="short-beat">Remember when we were walking together?</p>
+                <p>You told me something that I don&#x27;t think I&#x27;ll ever forget.</p>
+                <p>You said your brain wanted me to leave, pursue my dreams and make something of myself, but your heart
+                    wanted me to stay.</p>
+                <p>I don&#x27;t know whether you remember saying that. Maybe it was just something that came out in the
+                    moment.</p>
+                <p class="short-beat">But I remember it.</p>
+                <p>And I think some words become special not because of how long they were spoken, but because of how
+                    deeply they were felt by the person listening.</p>
+                <p>My heart would probably cherish those words forever.</p>
+                <p class="short-beat">And you know what else?</p>
+                <p>I still smile thinking about that conversation about kissing you.</p>
+                <p>When I mentioned it, you immediately said no. And then, almost as if you were correcting yourself,
+                    you said, &quot;It&#x27;s my brain talking.&quot;</p>
+                <p>God, you have no idea how many butterflies that one little sentence gave me.</p>
+                <p class="short-beat">Even that moment in the Ray.</p>
+                <p>When I held your face and kissed your forehead, you burst out saying something along the lines of,
+                    &quot;Yese pakadke bhi forehead pe hi kiss kiya?&quot;</p>
+                <p class="short-beat">I remember the way you said it.</p>
+                <p>I don&#x27;t know what exactly was going through your mind, and perhaps I shouldn&#x27;t assume. But
+                    I remember how it made me feel. For a moment, I wondered whether there was something you wanted to
+                    say but couldn&#x27;t.</p>
+                <p>And these are the little things I keep carrying with me.</p>
+                <p>Not because I want to keep questioning what they meant, but because they were moments when being
+                    around you felt so natural.</p>
+            </section>
+            <blockquote class="memory-interlude" data-reveal>You said your heart wanted me to stay.</blockquote>
+            <section class="letter-section" data-reveal aria-label="Keeping some distance">
+                <p>Kiddo, I genuinely love spending time with you.</p>
+                <p>I know things aren&#x27;t the same anymore. I know there are people around us, families,
+                    circumstances, and a hundred other things that make even the smallest interaction complicated.</p>
+                <p class="short-beat">And I understand that.</p>
+                <p>I also know that I have an impact on your life, even if it&#x27;s a very small one. Sometimes I
+                    wonder whether my presence makes you uncomfortable, whether you start thinking about what people
+                    might say, or whether you simply don&#x27;t know how to behave around me anymore.</p>
+                <p>And honestly, that thought keeps me away more than anything else.</p>
+                <p>I don&#x27;t want to become someone you have to avoid.</p>
+                <p>I don&#x27;t want you to see me coming and start wondering how to get out of a conversation.</p>
+                <p>But sometimes I do wonder, until we eventually go our separate ways, couldn&#x27;t we just stay in
+                    touch? Talk occasionally? Share a few laughs? Be happy around each other without making everything
+                    so complicated?</p>
+                <p>Unless, of course, there&#x27;s someone or something else in your life that makes that difficult. And
+                    if there is, I would rather understand that than keep making assumptions.</p>
+                <p class="short-beat">Because I miss talking to you.</p>
+                <p>I miss the way you&#x27;d look at me when you wanted me to hold you, especially when you were feeling
+                    cold.</p>
+                <p>I miss those little expressions of yours that I somehow always managed to notice.</p>
+                <p>I miss being someone you could casually approach without thinking twice.</p>
+                <p class="short-beat">And sometimes, I miss us.</p>
+            </section>
+            <section class="letter-section" data-reveal aria-label="The little things I carry">
+                <p class="short-beat">You know, there&#x27;s a song, <em>Husn</em>.</p>
+                <p>There&#x27;s a part that keeps coming back to me:</p>
+                <p class="quoted-memory">&quot;Jab bhi padhe kahaani teri, lagta mujhe mere naam ka, zikr kahin bhi hoga
+                    nahi.&quot;</p>
+                <p class="short-beat">That thought scares me.</p>
+                <p>Not necessarily because you&#x27;ll forget me. I know people move on, life gets busy, and memories
+                    eventually become quieter.</p>
+                <p>But what scares me is the possibility that someday you&#x27;ll remember these days and wish they had
+                    never happened.</p>
+                <p>That I&#x27;ll become a part of your life that you would rather not revisit.</p>
+                <p class="short-beat">I remember how things used to be.</p>
+                <p>I remember you crying for me. I remember you finding excuses to meet me, waiting for me, and being
+                    genuinely happy about those little opportunities to spend time together.</p>
+                <p class="short-beat">Even on my birthday this year.</p>
+                <p>I don&#x27;t know whether anyone in your family knew about the chocolate you wanted to give me. Maybe
+                    you could have given it later, when everyone was around.</p>
+                <p class="short-beat">But you came.</p>
+                <p>You wanted to meet me and give it to me yourself.</p>
+                <p class="short-beat">And I remember that.</p>
+                <p>I know you care about me, kiddo. At least, I have seen that care in so many little ways over the
+                    years. Even now, when we&#x27;ve deliberately created distance between us, I don&#x27;t think all of
+                    that suddenly disappears.</p>
+                <p>Remember when we were working on your portfolio?</p>
+                <p>The way you stayed beside me, holding my hand while we were doing our work. It was such a small
+                    thing, but it felt really good.</p>
+                <p>Then came the time when my abroad plans were getting closer.</p>
+                <p class="short-beat">Somehow, you started coming closer again.</p>
+                <p>Maybe because you thought I would be leaving soon. Maybe because you wanted to make the most of the
+                    time we had left.</p>
+                <p>I remember how you seemed to want those moments to last a little longer.</p>
+                <p>And when you found out I would be staying for Ganpati, the happiness on your face.</p>
+                <p class="short-beat">I miss that.</p>
+                <p>I miss seeing you genuinely happy just because there was a little more time.</p>
+            </section>
+            <section class="letter-section" data-reveal aria-label="Being comfortable with you">
+                <p>And there&#x27;s another thing I want to tell you.</p>
+                <p>I love how comfortable you&#x27;ve become with me over the years.</p>
+                <p>Remember when you used to hesitate before asking me to do something? Almost like you were wondering
+                    how to get me to agree.</p>
+                <p>Now you&#x27;re perfectly capable of handing me your work, asking me to massage your feet, your head,
+                    your back, or making me hold your shoes.</p>
+                <p>And honestly, I love that side of you.</p>
+                <p>You can be as demanding as you want with me. I don&#x27;t mind doing those little things for you. If
+                    I can make you comfortable, if I can make your day a little easier, I&#x27;d happily do it.</p>
+                <p>I&#x27;d probably spoil you rotten if you let me.</p>
+                <p>And yes, I still want that autograph on me.</p>
+                <p class="short-beat">I haven&#x27;t forgotten.</p>
+                <p>I also miss you giving me work. Your documents, college-related things, random little tasks that
+                    somehow became excuses for us to spend time together.</p>
+                <p>Now you&#x27;re a working woman. Independent, busy, managing your own things.</p>
+                <p class="short-beat">And I&#x27;m genuinely happy seeing that.</p>
+                <p>But if something ever comes up, you know I&#x27;m still here. You don&#x27;t have to hesitate to ask.
+                </p>
+                <p class="short-beat">And one more thing.</p>
+                <p>You promised me a hug before I left.</p>
+                <p>I know my plans got cancelled. I know things didn&#x27;t happen the way we expected.</p>
+                <p class="short-beat">But I never got that hug either.</p>
+                <p>And somehow, that&#x27;s one of those silly little unfinished things I still remember.</p>
+            </section>
+            <blockquote class="memory-interlude" data-reveal>I never got that hug.</blockquote>
+            <section class="letter-section" data-reveal aria-label="Trying to be okay">
+                <p>Our last proper conversation was about your internship.</p>
+                <p>I didn&#x27;t get to know much about it. I was feeling a little low that day, and honestly, seeing
+                    you around everywhere while not being able to interact with you was getting to me.</p>
+                <p class="short-beat">So I asked you something.</p>
+                <p class="quoted-memory">&quot;Would you rather see him happy with another girl or see him miserable
+                    with you?&quot;</p>
+                <p>You chose to see him happy with another girl.</p>
+                <p>And I think that answer told me more than you probably realised.</p>
+                <p>Maybe you genuinely wanted me to be happy, even if that happiness eventually meant being with someone
+                    else. Maybe you had already made peace with the possibility of us never being together.</p>
+                <p class="short-beat">I don&#x27;t know.</p>
+                <p>But I remember hearing your answer and feeling something sink inside me.</p>
+                <p>Because a part of me still wanted you to say the other thing. Not because I wanted us to be unhappy,
+                    but because some foolish part of me was still hoping that, somewhere, you wanted us too.</p>
+                <p class="short-beat">After that, I tried.</p>
+                <p class="short-beat">I really did.</p>
+                <p>I tried to get you out of my mind. I stopped reaching out. Stopped finding excuses. Stopped trying to
+                    create moments that might make either of us uncomfortable.</p>
+                <p class="short-beat">I needed some space.</p>
+                <p>Not because I stopped caring, but because I was beginning to lose myself in all the things I
+                    couldn&#x27;t understand.</p>
+                <p>I wanted to be okay without constantly needing to see you, hear from you, or know what was happening
+                    in your life.</p>
+                <p>And for a while, I thought maybe I was getting there.</p>
+            </section>
+            <section class="letter-section" data-reveal aria-label="The call on 22 November">
+                <p>But then we spoke again. 22nd nov just a call for after dinner walk</p>
+                <p class="short-beat">Just a little.</p>
+                <p class="short-beat">And it was strange.</p>
+                <p>I wasn&#x27;t suddenly expecting anything. I wasn&#x27;t even looking for some grand moment.</p>
+                <p>Yet, after talking to you, I felt lighter.</p>
+                <p class="short-beat">I felt happy.</p>
+                <p>It reminded me of how good it feels to simply talk to you without carrying all those questions in my
+                    head.</p>
+                <p class="short-beat">And that&#x27;s when I realised something.</p>
+                <p>I don&#x27;t necessarily miss all the complicated things between us.</p>
+                <p class="short-beat">I miss the person.</p>
+                <p>I miss talking to you. I miss laughing with you. I miss those little moments when we could simply
+                    exist around each other without having to think about what they meant.</p>
+            </section>
+            <blockquote class="memory-interlude" data-reveal>Forty days. And I still smiled when we spoke.</blockquote>
+            <section class="letter-section" data-reveal aria-label="For now">
+                <p class="short-beat">I don&#x27;t know what the future holds.</p>
+                <p>I don&#x27;t know whether we&#x27;ll ever get back to those days, or whether this distance is
+                    something we&#x27;ll eventually get used to.</p>
+                <p>I&#x27;m not writing this to ask you to choose me, to change anything, or to feel guilty about how
+                    things have turned out.</p>
+                <p>I just wanted you to know what these forty-plus days have felt like from my side.</p>
+                <p class="short-beat">I still care.</p>
+                <p class="short-beat">I still smile when I see you.</p>
+                <p>And yes, sometimes I still wish I could hold your hand, see that familiar smile, and spend a little
+                    more time with you.</p>
+                <p class="short-beat">Maybe that&#x27;s all I really wanted.</p>
+                <p class="short-beat">A little more time.</p>
+                <p class="short-beat">A little less hesitation.</p>
+                <p>A few more conversations that don&#x27;t have to end because someone might notice.</p>
+                <p>And perhaps, just one more hug before life takes us in different directions.</p>
+                <p>I don&#x27;t know if this is the last time I&#x27;ll ever write something like this.</p>
+                <p class="short-beat">Maybe it is.</p>
+                <p>Maybe tomorrow I&#x27;ll see you, we&#x27;ll exchange a smile, and I&#x27;ll have a hundred more
+                    things I want to tell you.</p>
+                <p>But for now, I think I&#x27;ll leave it here.</p>
+                <p class="short-beat">Take care of yourself, kiddo.</p>
+                <p class="short-beat">Keep smiling.</p>
+                <p>And whatever happens, I hope life gives you all the happiness you&#x27;ve always deserved.</p>
+            </section>
+            <section class="letter-ending" data-reveal aria-label="With a smile">
+                <p class="last-wish">I just hope that, somewhere in all those happy memories, there will be a little
+                    corner where you remember me too.</p>
+                <p>Not with sadness.</p>
+                <p>Not with regret.</p>
+                <p class="with-a-smile">Just with a smile.</p>
+                <p>Because that&#x27;s how I would always want to remember you.</p>
+            </section>
+        </article>
+
+        <footer class="letter-footer">
+            <div class="sunflower sunflower-small" aria-hidden="true">
+                <span class="petal" style="--i:0"></span><span class="petal" style="--i:1"></span>
+                <span class="petal" style="--i:2"></span><span class="petal" style="--i:3"></span>
+                <span class="petal" style="--i:4"></span><span class="petal" style="--i:5"></span>
+                <span class="petal" style="--i:6"></span><span class="petal" style="--i:7"></span>
+                <span class="petal" style="--i:8"></span><span class="petal" style="--i:9"></span>
+                <span class="petal" style="--i:10"></span><span class="petal" style="--i:11"></span>
+                <span class="petal" style="--i:12"></span><span class="petal" style="--i:13"></span>
+                <span class="petal" style="--i:14"></span><span class="petal" style="--i:15"></span>
+                <span class="flower-heart"></span>
+            </div>
+            <button id="read-again" class="read-again" type="button">Read again</button>
+            <nav class="book-chapter-nav" aria-label="Chapter navigation">
+                <a href="../03-that-morning/index.html">← Previous chapter</a>
+                <a href="../../index.html">Back to book</a>
+            </nav>
+        </footer>
+    </main>
+</body>
+
+</html>

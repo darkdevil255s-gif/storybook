@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>remember.</title>
+    <style>
+        /* ===== RESET ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #110a04;
+            color: #ede0cc;
+        }
+
+        /* ===== AUDIO ===== */
+        #bg-music {
+            display: none;
+        }
+
+        /* ===== LOCK SCREEN ===== */
+        #lock-screen {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            transition: opacity 1.8s ease;
+        }
+
+        #lock-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .lock-bg-fallback {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 35% 45%, #2a1205 0%, #0a0502 100%);
+        }
+
+        .lock-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(0.32);
+        }
+
+        .lock-vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 25%, rgba(3, 1, 0, 0.82) 100%);
+        }
+
+        .lock-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .lock-title {
+            font-family: 'Segoe Script', 'Bradley Hand ITC', cursive;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: normal;
+            color: #f0e0c8;
+            letter-spacing: 0.04em;
+            text-shadow: 0 2px 30px rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            animation: fadeUp 1.6s ease 0.4s forwards;
+        }
+
+        .lock-hint {
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-size: 0.85rem;
+            color: rgba(240, 224, 200, 0.38);
+            letter-spacing: 0.16em;
+            margin-top: 0.5rem;
+            margin-bottom: 2.4rem;
+            opacity: 0;
+            animation: fadeUp 1.6s ease 1s forwards;
+        }
+
+        .code-row {
+            opacity: 0;
+            animation: fadeUp 1.6s ease 1.6s forwards;
+        }
+
+        .code-input {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(240, 220, 190, 0.22);
+            color: #f0e0c8;
+            font-family: 'Segoe Script', cursive;
+            font-size: 1.05rem;
+            padding: 0.65rem 1.4rem;
+            border-radius: 5px;
+            outline: none;
+            text-align: center;
+            min-width: 240px;
+            letter-spacing: 0.08em;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        .code-input:focus {
+            border-color: rgba(240, 220, 190, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .unlock-btn {
+            display: block;
+            margin: 1.8rem auto 0;
+            background: transparent;
+            border: 1px solid rgba(240, 220, 190, 0.26);
+            color: rgba(240, 224, 200, 0.68);
+            font-family: 'Segoe Script', cursive;
+            font-size: 1rem;
+            padding: 0.6rem 2.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            letter-spacing: 0.22em;
+            transition: all 0.35s;
+            opacity: 0;
+            animation: fadeUp 1.6s ease 2.1s forwards;
+        }
+
+        .unlock-btn:hover {
+            background: rgba(240, 220, 190, 0.08);
+            border-color: rgba(240, 220, 190, 0.5);
+            color: #f0e0c8;
+        }
+
+        .lock-wrong {
+            font-family: 'Segoe Script', cursive;
+            font-size: 0.85rem;
+            color: rgba(240, 210, 170, 0.5);
+            letter-spacing: 0.12em;
+            margin-top: 1.1rem;
+            min-height: 1.4rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .lock-wrong.show {
+            opacity: 1;
+        }
+
+        .shake {
+            animation: shake 0.45s ease forwards !important;
+        }
+
+        /* ===== MUSIC BUTTON ===== */
+        #music-btn {
+            position: fixed;
+            top: 1.2rem;
+            right: 1.5rem;
+            z-index: 190;
+            background: rgba(8, 4, 2, 0.55);
+            border: 1px solid rgba(240, 220, 190, 0.18);
+            color: rgba(240, 224, 200, 0.48);
+            font-family: Georgia, serif;
+            font-size: 0.75rem;
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            letter-spacing: 0.15em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            display: none;
+        }
+
+        #music-btn.on {
+            display: block;
+        }
+
+        #music-btn:hover {
+            color: #f0e0c8;
+            border-color: rgba(240, 220, 190, 0.4);
+        }
+
+        /* ===== WALL SCREEN ===== */
+        #wall-screen {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.6s ease;
+        }
+
+        #wall-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* cork-board atmosphere */
+        #wall-bg {
+            position: absolute;
+            inset: 0;
+            background: #120a04;
+            background-image:
+                radial-gradient(ellipse at 15% 25%, rgba(65, 30, 8, 0.18) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 75%, rgba(45, 20, 5, 0.14) 0%, transparent 55%),
+                radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.45) 100%);
+        }
+
+        /* ===== POLAROID WALL ===== */
+        #wall {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: clamp(2.5rem, 4vw, 4rem) clamp(1.5rem, 5vw, 4rem);
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(1.8rem, 3vw, 2.8rem) clamp(1.2rem, 2.5vw, 2rem);
+            align-content: flex-start;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(240, 220, 190, 0.12) transparent;
+        }
+
+        #wall::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        #wall::-webkit-scrollbar-thumb {
+            background: rgba(240, 220, 190, 0.12);
+            border-radius: 2px;
+        }
+
+        /* tap hint */
+        #tap-hint {
+            position: absolute;
+            bottom: calc(100% + 0.5rem);
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-size: 0.72rem;
+            color: rgba(240, 220, 190, 0.28);
+            letter-spacing: 0.14em;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #tap-hint.show {
+            opacity: 1;
+        }
+
+        /* ===== POLAROID ===== */
+        .polaroid {
+            --rot: 0deg;
+            width: clamp(140px, 17vw, 185px);
+            flex-shrink: 0;
+            background: #f5ede0;
+            padding: clamp(8px, 1.2vw, 11px);
+            padding-bottom: clamp(36px, 5.5vw, 48px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            position: relative;
+            opacity: 0;
+            transform: rotate(var(--rot));
+            transform-origin: center center;
+        }
+
+        .polaroid.dropped {
+            animation: polDrop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .polaroid.dropped:hover {
+            transform: rotate(var(--rot)) scale(1.06) !important;
+            box-shadow: 0 10px 36px rgba(0, 0, 0, 0.68), 0 2px 8px rgba(0, 0, 0, 0.4);
+            z-index: 20;
+        }
+
+        /* photo area */
+        .pol-photo {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            position: relative;
+            background: #1a0c05;
+        }
+
+        .pol-img {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.04) saturate(0);
+            transition: filter 2.4s ease 0.4s;
+        }
+
+        .polaroid.developed .pol-img {
+            filter: brightness(1) saturate(1);
+        }
+
+        /* blank photo (no image) */
+        .pol-blank {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #180e06 0%, #0c0603 100%);
+        }
+
+        .pol-blank-label {
+            font-family: 'Segoe Script', cursive;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            color: rgba(240, 220, 190, 0.2);
+            letter-spacing: 0.06em;
+            text-align: center;
+            padding: 0.4rem;
+            line-height: 1.5;
+        }
+
+        /* dark veil that lifts during developing */
+        .pol-veil {
+            position: absolute;
+            inset: 0;
+            background: #0c0603;
+            transition: opacity 2.2s ease 0.4s;
+        }
+
+        .polaroid.developed .pol-veil {
+            opacity: 0;
+        }
+
+        /* caption bar */
+        .pol-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: clamp(36px, 5.5vw, 48px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe Script', cursive;
+            font-size: clamp(0.62rem, 1.5vw, 0.8rem);
+            color: #3a2010;
+            letter-spacing: 0.04em;
+            padding: 0 6px;
+            text-align: center;
+            line-height: 1.2;
+            opacity: 0;
+            transition: opacity 0.8s ease 2.2s;
+        }
+
+        .polaroid.developed .pol-caption {
+            opacity: 1;
+        }
+
+        /* ===== WALL NAV ===== */
+        #wall-nav {
+            height: 76px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(to top, rgba(10, 5, 2, 0.94) 60%, transparent);
+        }
+
+        #reveal-btn {
+            background: transparent;
+            border: 1px solid rgba(240, 220, 190, 0.24);
+            color: rgba(240, 224, 200, 0.6);
+            font-family: 'Segoe Script', cursive;
+            font-size: 0.9rem;
+            padding: 0.55rem 2.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            letter-spacing: 0.18em;
+            transition: all 0.35s;
+        }
+
+        #reveal-btn:hover {
+            background: rgba(240, 220, 190, 0.07);
+            color: #f0e0c8;
+            border-color: rgba(240, 220, 190, 0.44);
+        }
+
+        #wall-counter {
+            font-family: Georgia, serif;
+            font-size: 0.7rem;
+            color: rgba(240, 220, 190, 0.28);
+            letter-spacing: 0.14em;
+        }
+
+        /* ===== STORY OVERLAY ===== */
+        #story-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(5, 2, 1, 0.94);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.45s ease;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        #story-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        #overlay-inner {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        #overlay-photo-wrap {
+            width: clamp(190px, 42vw, 260px);
+            aspect-ratio: 1 / 1;
+            margin: 0 auto 0.5rem;
+            background: #f5ede0;
+            padding: 9px;
+            padding-bottom: 38px;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.65);
+        }
+
+        #overlay-photo {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-color: #1a0c05;
+        }
+
+        #overlay-caption {
+            font-family: 'Segoe Script', cursive;
+            font-size: 0.82rem;
+            color: rgba(240, 220, 190, 0.38);
+            letter-spacing: 0.1em;
+            margin: 1.4rem 0 0.8rem;
+        }
+
+        #overlay-text {
+            font-family: Georgia, serif;
+            font-size: clamp(0.9rem, 1.6vw, 1rem);
+            line-height: 2.1;
+            color: rgba(240, 220, 200, 0.76);
+            text-align: center;
+            margin-bottom: 2rem;
+            white-space: pre-line;
+        }
+
+        #overlay-close {
+            background: transparent;
+            border: 1px solid rgba(240, 220, 190, 0.2);
+            color: rgba(240, 220, 190, 0.4);
+            font-family: Georgia, serif;
+            font-size: 1.2rem;
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        #overlay-close:hover {
+            color: #f0e0c8;
+            border-color: rgba(240, 220, 190, 0.45);
+        }
+
+        /* ===== END SCREEN ===== */
+        #end-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 150;
+            background: #070402;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.8s ease;
+        }
+
+        #end-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .end-wrap {
+            text-align: center;
+        }
+
+        .end-title {
+            font-family: 'Segoe Script', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: normal;
+            color: rgba(240, 224, 200, 0.48);
+            letter-spacing: 0.1em;
+            opacity: 0;
+        }
+
+        #end-screen.active .end-title {
+            animation: fadeUp 1.4s ease 0.3s forwards;
+        }
+
+        .end-sub {
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-size: 0.86rem;
+            color: rgba(240, 224, 200, 0.22);
+            letter-spacing: 0.22em;
+            margin-top: 0.5rem;
+            margin-bottom: 2.8rem;
+            opacity: 0;
+        }
+
+        #end-screen.active .end-sub {
+            animation: fadeUp 1.4s ease 0.9s forwards;
+        }
+
+        .end-btns {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            opacity: 0;
+        }
+
+        #end-screen.active .end-btns {
+            animation: fadeUp 1.4s ease 1.4s forwards;
+        }
+
+        .end-btn {
+            background: transparent;
+            border: 1px solid rgba(240, 220, 190, 0.22);
+            color: rgba(240, 224, 200, 0.55);
+            font-family: 'Segoe Script', cursive;
+            font-size: 1rem;
+            padding: 0.65rem 2.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            letter-spacing: 0.15em;
+            transition: all 0.35s;
+        }
+
+        .end-btn:hover {
+            background: rgba(240, 220, 190, 0.08);
+            border-color: rgba(240, 220, 190, 0.45);
+            color: #f0e0c8;
+        }
+
+        /* ===== KEYFRAMES ===== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            18% {
+                transform: translateX(-8px);
+            }
+
+            36% {
+                transform: translateX(8px);
+            }
+
+            54% {
+                transform: translateX(-4px);
+            }
+
+            72% {
+                transform: translateX(4px);
+            }
+
+            90% {
+                transform: translateX(-2px);
+            }
+        }
+
+        @keyframes polDrop {
+            from {
+                opacity: 0;
+                transform: rotate(var(--rot)) translateY(-32px) scale(0.82);
+            }
+
+            to {
+                opacity: 1;
+                transform: rotate(var(--rot)) translateY(0) scale(1);
+            }
+        }
+
+        /* ===== ANDROID HINT ===== */
+        #android-hint {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 300;
+            background: rgba(10, 5, 2, 0.93);
+            border-top: 1px solid rgba(240, 220, 190, 0.15);
+            padding: 0.9rem 1.3rem;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            backdrop-filter: blur(12px);
+        }
+
+        #android-hint.show {
+            display: flex;
+        }
+
+        .hint-text {
+            flex: 1;
+            font-family: Georgia, serif;
+            font-size: 0.8rem;
+            color: rgba(240, 224, 200, 0.6);
+            line-height: 1.55;
+        }
+
+        .hint-text strong {
+            color: rgba(240, 220, 190, 0.88);
+            font-weight: normal;
+        }
+
+        .hint-dismiss {
+            background: transparent;
+            border: 1px solid rgba(240, 220, 190, 0.2);
+            color: rgba(240, 220, 190, 0.4);
+            font-family: Georgia, serif;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .hint-dismiss:hover {
+            color: #f0e0c8;
+            border-color: rgba(240, 220, 190, 0.45);
+        }
+
+        /* iOS momentum scroll */
+        #wall,
+        #story-overlay {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 600px) {
+            .lock-title {
+                font-size: clamp(2.2rem, 13vw, 3.5rem);
+            }
+
+            .lock-hint {
+                font-size: 0.74rem;
+                letter-spacing: 0.08em;
+                margin-bottom: 1.8rem;
+            }
+
+            /* never overflow the viewport width */
+            .code-input {
+                width: min(260px, 82vw);
+                min-width: unset;
+                font-size: 0.95rem;
+            }
+
+            #wall {
+                padding: 1.8rem 0.8rem 1rem;
+                gap: 1.4rem 0.8rem;
+            }
+
+            /* overlay tighter on small screens */
+            #story-overlay {
+                padding: 1.2rem 1rem;
+                align-items: flex-start;
+            }
+
+            #overlay-inner {
+                padding-top: 0.5rem;
+            }
+
+            #overlay-photo-wrap {
+                width: min(200px, 72vw);
+            }
+
+            #overlay-text {
+                font-size: 0.88rem;
+                line-height: 1.95;
+            }
+
+            #wall-nav {
+                height: 64px;
+            }
+
+            #reveal-btn {
+                font-size: 0.82rem;
+                padding: 0.5rem 1.6rem;
+            }
+
+            .end-btns {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.9rem;
+            }
+
+            #music-btn {
+                font-size: 0.7rem;
+                padding: 0.35rem 0.8rem;
+                top: 0.8rem;
+                right: 0.8rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../../assets/chapter.css">
+    <link rel="stylesheet" href="../../assets/book-session.css">
+    <script src="../../assets/book-session.js" defer></script>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+</head>
+
+<body>
+    <a class="book-back" href="../../index.html">← Back to book</a>
+    <noscript><div class="book-script-warning"><p>Enable JavaScript to open this chapter.</p><a href="../../index.html">Back to book</a></div></noscript>
+
+    <audio id="bg-music" loop preload="none"></audio>
+    <button id="music-btn" type="button" onclick="toggleMusic()" aria-pressed="false">play music</button>
+
+    <!-- ANDROID HINT -->
+    <div id="android-hint">
+        <p class="hint-text">Photos can't load in <strong>Chrome</strong> on Android. Open with <strong>Firefox</strong>
+            for the full experience.</p>
+        <button class="hint-dismiss" onclick="document.getElementById('android-hint').remove()">ok</button>
+    </div>
+
+    <!-- ==================== LOCK SCREEN ==================== -->
+    <div id="lock-screen">
+        <div class="lock-bg-fallback"></div>
+        <div class="lock-bg"></div>
+        <div class="lock-vignette"></div>
+        <div class="lock-content">
+            <h1 class="lock-title">remember.</h1>
+            <p class="lock-hint">what did she say when she stood on her toes</p>
+            <div class="code-row">
+                <label class="book-input-label" for="code-input">Chapter password</label>
+                <input class="code-input" id="code-input" type="password" placeholder="type it here" autocomplete="off"
+                    autocorrect="off" autocapitalize="off" spellcheck="false">
+            </div>
+            <button class="unlock-btn" id="unlock-btn" type="button" onclick="tryUnlock()">open</button>
+            <p class="lock-wrong" id="lock-wrong" role="status" aria-live="polite"></p>
+        </div>
+    </div>
+
+    <!-- ==================== WALL SCREEN ==================== -->
+    <div id="wall-screen" inert aria-hidden="true">
+        <div id="wall-bg"></div>
+        <div id="wall">
+            <!-- polaroids rendered by JS -->
+        </div>
+        <div id="wall-nav">
+            <button id="reveal-btn" onclick="revealNext()">next memory &rarr;</button>
+            <span id="wall-counter" aria-live="polite"></span>
+        </div>
+    </div>
+
+    <!-- ==================== STORY OVERLAY ==================== -->
+    <div id="story-overlay" role="dialog" aria-modal="true" aria-labelledby="overlay-caption" inert aria-hidden="true" onclick="handleOverlayBg(event)">
+        <div id="overlay-inner">
+            <div id="overlay-photo-wrap">
+                <div id="overlay-photo"></div>
+            </div>
+            <div id="overlay-caption"></div>
+            <div id="overlay-text"></div>
+            <button id="overlay-close" aria-label="Close memory" onclick="closeOverlay()">&#x2715;</button>
+        </div>
+    </div>
+
+    <!-- ==================== END SCREEN ==================== -->
+    <div id="end-screen" inert aria-hidden="true">
+        <div class="end-wrap">
+            <h2 class="end-title" tabindex="-1">remember.</h2>
+            <p class="end-sub">she never left his mind.</p>
+            <div class="end-btns">
+                <button class="end-btn" onclick="doRestart()">look again</button>
+                <a class="end-btn" href="../03-that-morning/index.html">next chapter →</a>
+                <a class="end-btn" href="../../index.html">back to book</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPT ==================== -->
+    <script src="../../assets/chapter-tools.js" defer></script>
+    <script src="memories.js" defer></script>
+    <script src="chapter.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "private-storybook",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "node --env-file=.env.local scripts/dev-server.js",
+    "build": "node scripts/validate-deploy.js",
+    "setup-auth": "node scripts/setup-auth.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@vercel/firewall": "1.2.6",
+    "@vercel/functions": "3.11.3"
+  }
+}

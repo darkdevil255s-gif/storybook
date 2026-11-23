@@ -1,0 +1,10 @@
+source-material/
+local-only/
+.claude/
+.claude-dev-helper/
+.env
+.env.*
+node_modules/
+tests/
+DEPLOYMENT.md
+Start.vbs
